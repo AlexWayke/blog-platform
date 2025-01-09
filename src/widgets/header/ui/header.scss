@@ -1,0 +1,27 @@
+.header {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  padding: 16px 20px;
+  background-color: var(--base);
+  &__title {
+    font-size: 18px;
+    color: var(--heading);
+    line-height: 1;
+    flex-grow: 1;
+  }
+  &__button {
+    color: var(--heading);
+    padding: 16px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    transition: all ease 0.3s;
+    &--green {
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}

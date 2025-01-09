@@ -27,7 +27,10 @@ export default tseslint.config(
     files: ['src/**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        "JSX": "readonly",
+        ...globals.browser
+      }
     },
     plugins: {
       'react-hooks': reactHooks,
@@ -88,6 +91,23 @@ export default tseslint.config(
           },
         },
       ],
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
+      "import/parsers": {
+        "@typescript-eslint/parser": [".ts", ".tsx"],
+      },
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true,
+          project: "./tsconfig.json",
+        },
+        node: {
+          extensions: [".js", ".jsx", ".ts", ".tsx"],
+        },
+      },
     },
   }
 );

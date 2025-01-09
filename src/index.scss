@@ -1,0 +1,70 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: normal;
+}
+html,
+body,
+ul,
+ol,
+li,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+  padding: 0;
+}
+a {
+  color: transparent;
+  text-decoration: none;
+}
+li {
+  list-style: none;
+}
+button {
+  all: unset;
+}
+
+html,
+body,
+#root {
+  min-width: 100%;
+  min-height: 100%;
+  height: 100%;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.layout {
+  max-width: 940px;
+}
+
+:root {
+  --background: #ebeef3;
+  --base: #ffffff;
+  --border: #d9d9d9;
+  --success: #52c41a;
+  --heading: #262626;
+  --blue: #1890ff;
+  --text: #404040;
+  --text-second: #808080;
+}
+
+#root {
+  font-family: 'Open-sans', sans-serif;
+}
