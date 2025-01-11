@@ -11,11 +11,10 @@ type CardProps = {
     author: string;
     date: string;
   };
-  actionSlot: JSX.Element;
 };
 
 function Card(props: CardProps) {
-  const { cardData, actionSlot } = props;
+  const { cardData } = props;
   const { title, tags, text, author, date } = cardData;
   const tagsList = tags.map((tag) => (
     <li className="card__tags-item" key={uuidv4()}>
@@ -29,7 +28,12 @@ function Card(props: CardProps) {
         <div className="card__header-main">
           <div className="card__actions">
             <h2 className="card__title">{title}</h2>
-            {actionSlot}
+            <div className="card__like">
+              <button className="card__like-btn" type="submit">
+                <img src="/heart-icon.svg" alt="like" />
+              </button>
+              <p className="card__like-count">12</p>
+            </div>
           </div>
           <ul className="card__tags">{tagsList}</ul>
           <p className="card__subtitle">{text}</p>

@@ -21,7 +21,6 @@ export default tseslint.config(
     extends: [
       js.configs.recommended,
       ...tseslint.configs.recommended,
-      ...compat.extends('airbnb'),
       ...compat.extends('prettier'),
     ],
     files: ['src/**/*.{js,jsx,ts,tsx}'],
@@ -39,33 +38,12 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-      'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
-      'react/jsx-filename-extension': [
-        1,
-        {
-          extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        },
-      ],
       'react/react-in-jsx-scope': 'off',
-      'react/jsx-uses-react': 'off',
       quotes: [2, 'single', { avoidEscape: true }],
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-      'react/jsx-uses-react': 'error',
-      'react/jsx-uses-vars': 'error',
-      'react/function-component-definition': [
-        'error',
-        {
-          namedComponents: 'function-declaration',
-          unnamedComponents: 'arrow-function',
-        },
-      ],
       'arrow-body-style': ['error', 'as-needed'],
       'no-unused-vars': 'error',
-      'react/jsx-filename-extension': ['warn', { extensions: ['.jsx', '.tsx'] }],
-      'import/no-unresolved': 'error',
-      'import/no-duplicates': 'error',
       'react/prop-types': 'off',
-      'react/no-this-in-sfc': 'error',
       'no-useless-call': 'error',
       'no-nested-ternary': 'off',
       'no-useless-return': 'error',
@@ -73,24 +51,6 @@ export default tseslint.config(
       '@typescript-eslint/no-shadow': 'error',
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
-      'import/order': [
-        'error',
-        {
-          groups: [
-            'builtin', // Built-in Node.js modules
-            'external', // External modules from node_modules
-            'internal', // Internal packages
-            ['sibling', 'parent'], // Parent and sibling modules
-            'index', // Index files
-            'unknown', // Unknown group
-          ],
-          pathGroupsExcludedImportTypes: ['builtin', 'external'],
-          alphabetize: {
-            order: 'asc',
-            caseInsensitive: true,
-          },
-        },
-      ],
     },
     settings: {
       react: {

@@ -1,3 +1,4 @@
+import postsReducer from './model/postsSlice.ts';
 import ListOfPosts from './ui/listOfPosts.tsx';
 
-export default ListOfPosts;
+export { ListOfPosts, postsReducer };
