@@ -1,5 +1,6 @@
 .card {
   display: flex;
+  flex-direction: column;
   padding: 16px;
   background-color: var(--base);
   box-shadow: 0 4px 12px -4px var(--heading);
@@ -74,5 +75,12 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  &__body {
+    font-weight: 400;
+    color: var(--heading);
+    & p {
+      margin: 16px 0;
+    }
   }
 }

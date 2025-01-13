@@ -1,9 +1,12 @@
+import { Link } from 'react-router';
 import './header.scss';
 
 function Header() {
   return (
     <header className="header">
-      <h6 className="header__title">Realworld Blog</h6>
+      <Link to="/" className="header__title">
+        Realworld Blog
+      </Link>
       <a href="/" className="header__button">
         Sign In
       </a>

@@ -1,3 +1,3 @@
-import PostsList from './ui/postsList.tsx';
+import PostsListPage from './ui/postsListPage.tsx';
 
-export default PostsList;
+export default PostsListPage;

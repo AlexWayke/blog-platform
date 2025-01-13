@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { postsReducer } from '@/widgets/listOfPosts/index.ts';
+import { blogApi } from '@/shared/api/getPosts';
 
 const store = configureStore({
   reducer: {
-    posts: postsReducer,
+    [blogApi.reducerPath]: blogApi.reducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(blogApi.middleware),
 });
 
 export default store;

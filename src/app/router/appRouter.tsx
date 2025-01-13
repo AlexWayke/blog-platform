@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router';
 import PostsList from '@/pages/postsList/index.ts';
+import PostPage from '@/pages/post';
 
 function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<PostsList />} />
+        <Route path="/" element={<PostsList />} />
+        <Route path="/:slug" element={<PostPage />} />
       </Routes>
     </BrowserRouter>
   );

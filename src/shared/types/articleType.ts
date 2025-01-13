@@ -3,7 +3,7 @@ export interface ArticleType {
   title: string;
   description: string;
   body: string;
-  tags: string[];
+  tagList: string[];
   createdAt: string;
   updatedAt: string;
   favorited: boolean;

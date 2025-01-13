@@ -1,28 +1,40 @@
-import { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Card from '@/entities/card/index.ts';
-import Pagination from '@/entities/pagination/index.ts';
-import Like from '@/features/like/index.ts';
-import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks.ts';
-import { fetchPosts } from '../model/postsSlice.ts';
-
+import { Pagination } from 'antd';
+import { useGetPostsQuery } from '@/shared/api/getPosts';
+import { Spin } from 'antd';
+import { useState } from 'react';
+import { ArticleType } from '@/shared/types/articleType';
 import './listOfPosts.scss';
 
 function ListOfPosts() {
-  const dispatch = useAppDispatch();
-  const posts = useAppSelector((state) => state.posts.posts);
-  console.log('posts', posts);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    dispatch(fetchPosts());
-  });
+  const { data, isLoading } = useGetPostsQuery((currentPage - 1) * 10);
+  const posts = data?.articles || [];
+  const maxPages = Math.floor(data?.articlesCount / 10) || 1;
 
-  const cards = posts.map((post) => <Card cardData={post} actionSlot={<Like />} key={uuidv4()} />);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const cards = posts.map((post: ArticleType) => <Card cardData={post} showBody={false} key={uuidv4()} />);
 
   return (
     <div className="posts wrapper">
-      <div className="posts_list">{cards}</div>
-      <Pagination />
+      {isLoading && <Spin size="large" />}
+      {!isLoading && (
+        <>
+          <div className="posts_list layout">{cards}</div>
+          <Pagination
+            className="layout"
+            defaultCurrent={currentPage}
+            onChange={handlePageChange}
+            showSizeChanger={false}
+            total={maxPages}
+          />
+        </>
+      )}
     </div>
   );
 }

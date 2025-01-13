@@ -1,7 +1,7 @@
 import Header from '@/widgets/header/index.ts';
 import { ListOfPosts } from '@/widgets/listOfPosts/index.ts';
 
-function PostsList() {
+function PostsListPage() {
   return (
     <>
       <Header />
@@ -10,4 +10,4 @@ function PostsList() {
   );
 }
 
-export default PostsList;
+export default PostsListPage;
