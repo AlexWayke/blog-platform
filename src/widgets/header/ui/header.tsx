@@ -7,12 +7,12 @@ function Header() {
       <Link to="/" className="header__title">
         Realworld Blog
       </Link>
-      <a href="/" className="header__button">
+      <Link to="/sign-in" className="header__button">
         Sign In
-      </a>
-      <a href="/" className="header__button header__button--green">
+      </Link>
+      <Link to="/sign-up" className="header__button header__button--green">
         Sign Up
-      </a>
+      </Link>
     </header>
   );
 }

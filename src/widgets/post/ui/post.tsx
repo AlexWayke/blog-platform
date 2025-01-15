@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import Card from '@/entities/card/index.ts';
-import { useGetSinglePostQuery } from '@/shared/api/getPosts';
+import { useGetSinglePostQuery } from '@/entities/api/rtkApi';
 import { Spin } from 'antd';
 
 import './post.scss';

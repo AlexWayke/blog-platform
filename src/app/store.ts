@@ -1,11 +1,15 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { blogApi } from '@/shared/api/getPosts';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { rtkApi } from '@/entities/api/rtkApi';
+import userReducer from '@/entities/slices/userSlice';
+
+const reducers = combineReducers({
+  [rtkApi.reducerPath]: rtkApi.reducer,
+  user: userReducer,
+});
 
 const store = configureStore({
-  reducer: {
-    [blogApi.reducerPath]: blogApi.reducer,
-  },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(blogApi.middleware),
+  reducer: reducers,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(rtkApi.middleware),
 });
 
 export default store;

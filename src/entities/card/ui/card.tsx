@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import './card.scss';
-import User from '@/shared/user/index.ts';
+import User from '@/entities/user';
 import { ArticleType } from '@/shared/types/articleType';
 import { Link } from 'react-router';
 import ReactMarkdown from 'react-markdown';

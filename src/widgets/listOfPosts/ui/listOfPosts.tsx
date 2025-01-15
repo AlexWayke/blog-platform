@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import Card from '@/entities/card/index.ts';
 import { Pagination } from 'antd';
-import { useGetPostsQuery } from '@/shared/api/getPosts';
+import { useGetPostsQuery } from '@/entities/api/rtkApi';
 import { Spin } from 'antd';
 import { useState } from 'react';
 import { ArticleType } from '@/shared/types/articleType';

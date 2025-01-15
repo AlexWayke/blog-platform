@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const blogApi = createApi({
+export const rtkApi = createApi({
   reducerPath: 'blogApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://blog-platform.kata.academy/api' }),
   endpoints: (build) => ({
@@ -18,7 +18,20 @@ export const blogApi = createApi({
         url: `/articles/${slug}`,
       }),
     }),
+    registerUser: build.mutation({
+      query: ({ username, email, password }) => ({
+        url: '/users',
+        method: 'POST',
+        body: {
+          user: {
+            username,
+            email,
+            password,
+          },
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetPostsQuery, useGetSinglePostQuery } = blogApi;
+export const { useGetPostsQuery, useGetSinglePostQuery, useRegisterUserMutation } = rtkApi;
