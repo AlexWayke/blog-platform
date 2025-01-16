@@ -3,11 +3,9 @@ import Form from '@/entities/form';
 import { getLabelId } from '@/entities/form/lib/uniqId';
 
 function SignInForm() {
-  const search = '';
-
   return (
     <Form title="Sign In">
-      <form className="form__body" action={search}>
+      <form className="form__body">
         <div className="form__field">
           <label className="form__label" htmlFor={getLabelId(0)}>
             Email address
@@ -25,7 +23,7 @@ function SignInForm() {
         </button>
       </form>
       <p className="form__annotation">
-        Don’t have an account?{' '}
+        Don’t have an account?
         <Link className="form__annotation-link" to="/sign-up">
           Sign Up
         </Link>

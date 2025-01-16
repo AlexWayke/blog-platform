@@ -1,19 +1,51 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import Form from '@/entities/form';
 import { getLabelId } from '@/entities/form/lib/uniqId';
 import { FieldValues, useForm } from 'react-hook-form';
+import { useRegisterUserMutation } from '@/entities/api/rtkApi';
+import { useEffect } from 'react';
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { setUser } from '@/entities/slices/userSlice';
+import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks';
 
 function SignUpForm() {
+  const [registerUser, { data, isSuccess, error, isLoading }] = useRegisterUserMutation();
+  const userEmail = useAppSelector((state) => state.user.email);
   const {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { errors },
   } = useForm();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const onSubmit = (data: FieldValues) => {
-    console.log('data', data);
+  const onSubmit = (fieldData: FieldValues) => {
+    const { username, email, password } = fieldData;
+    registerUser({ username, email, password });
   };
+
+  useEffect(() => {
+    if (error && 'data' in error) {
+      const errorData = error as { data: { errors: { body: string } } };
+      Object.entries(errorData.data.errors).forEach(([key, value]) => {
+        setError(key, { type: 'custom', message: value });
+      });
+    }
+  }, [error, setError]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      const { email, token, username } = data.user;
+      dispatch(setUser({ email, token, username }));
+      navigate('/');
+    }
+    if (userEmail) {
+      navigate('/');
+    }
+  }, [isSuccess, data, dispatch, navigate, userEmail]);
 
   return (
     <Form title="Create new account">
@@ -133,16 +165,15 @@ function SignUpForm() {
             <>{errors.conditions_agree.message}</>
           </p>
         )}
-        <button className="form__btn" type="submit">
-          Create
+        <button className="form__btn" disabled={isLoading} type="submit">
+          {isLoading ? <Spin indicator={<LoadingOutlined spin />} /> : 'Create'}
         </button>
       </form>
       <p className="form__annotation">
-        Already have an account?{' '}
+        Already have an account?
         <Link className="form__annotation-link" to="/sign-in">
           Sign In
         </Link>
-        .
       </p>
     </Form>
   );
