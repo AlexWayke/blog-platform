@@ -31,7 +31,19 @@ export const rtkApi = createApi({
         },
       }),
     }),
+    loginUser: build.mutation({
+      query: ({ email, password }) => ({
+        url: '/users/login',
+        method: 'POST',
+        body: {
+          user: {
+            email,
+            password,
+          },
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetPostsQuery, useGetSinglePostQuery, useRegisterUserMutation } = rtkApi;
+export const { useGetPostsQuery, useGetSinglePostQuery, useRegisterUserMutation, useLoginUserMutation } = rtkApi;
