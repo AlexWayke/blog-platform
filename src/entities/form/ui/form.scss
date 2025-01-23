@@ -11,6 +11,9 @@
     border-radius: 4px;
     max-width: 380px;
     width: 100%;
+    &--xl {
+      max-width: 940px;
+    }
   }
   &__title {
     color: var(--heading);
@@ -32,7 +35,7 @@
   }
   &__label {
     color: var(--heading);
-    font-size: 12px;
+    font-size: 14px;
     line-height: 20px;
   }
   &__input {
@@ -64,7 +67,14 @@
       font-size: 14px;
       line-height: 20px;
     }
+    &--textarea {
+      resize: none;
+      height: 168px;
+      font-family: 'InterUI';
+      font-weight: normal;
+    }
   }
+
   &__checkbox {
     margin-top: 8px;
     border-top: 1px solid var(--border);

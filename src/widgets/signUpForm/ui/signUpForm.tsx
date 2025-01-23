@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks';
 
 function SignUpForm() {
   const [registerUser, { data, isSuccess, error, isLoading }] = useRegisterUserMutation();
-  const userEmail = useAppSelector((state) => state.user.email);
+  const isLogged = useAppSelector((state) => state.user.isLogged);
   const {
     register,
     handleSubmit,
@@ -38,14 +38,13 @@ function SignUpForm() {
 
   useEffect(() => {
     if (isSuccess) {
-      const { email, token, username } = data.user;
-      dispatch(setUser({ email, token, username }));
+      dispatch(setUser(data.user));
       navigate('/');
     }
-    if (userEmail) {
+    if (isLogged) {
       navigate('/');
     }
-  }, [isSuccess, data, dispatch, navigate, userEmail]);
+  }, [isSuccess, data, dispatch, navigate, isLogged]);
 
   return (
     <Form title="Create new account">

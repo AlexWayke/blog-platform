@@ -11,7 +11,7 @@ export interface ArticleType {
   author: {
     username: string;
     bio: string;
-    image: string;
+    avatar: string;
     following: boolean;
   };
 }

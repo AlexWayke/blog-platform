@@ -10,15 +10,46 @@
     line-height: 1;
     flex-grow: 1;
   }
+  &__controls {
+    display: flex;
+    gap: 20px;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    &-name {
+      font-size: 18px;
+      line-height: 1;
+      color: var(--heading);
+    }
+    &-img {
+      height: 48px;
+      width: 48px;
+    }
+  }
   &__button {
     color: var(--heading);
     padding: 16px;
     box-sizing: border-box;
     border-radius: 4px;
     transition: all ease 0.3s;
-    &--green {
+    cursor: pointer;
+    &--sign-up {
       color: var(--success);
       border: 1px solid var(--success);
+    }
+    &--create-article {
+      color: var(--success);
+      border: 1px solid var(--success);
+      padding: 4px 8px;
+    }
+    &--logout {
+      color: var(--text);
+      border: 1px solid var(--text);
     }
     &:hover {
       opacity: 0.8;

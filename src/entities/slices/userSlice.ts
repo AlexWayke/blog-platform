@@ -4,9 +4,13 @@ import Cookies from 'js-cookie';
 const user = Cookies.get('user');
 
 const initialState = (user && JSON.parse(user)) || {
-  email: null,
-  token: null,
-  username: null,
+  user: {
+    email: null,
+    token: null,
+    username: null,
+    image: '/Default_user.png',
+  },
+  isLogged: false,
 };
 
 const userSlice = createSlice({
@@ -14,16 +18,23 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action) {
-      state.email = action.payload.email;
-      state.token = action.payload.token;
-      state.username = action.payload.username;
-      const currentUser = JSON.stringify(action.payload);
+      state.user = action.payload;
+      state.isLogged = true;
+
+      const currentUser = JSON.stringify({
+        user: state.user,
+        isLogged: state.isLogged,
+      });
       Cookies.set('user', currentUser);
     },
     removeUser(state) {
-      state.email = null;
-      state.token = null;
-      state.username = null;
+      state.user = {
+        email: null,
+        token: null,
+        username: null,
+        avatar: null,
+      };
+      state.isLogged = false;
       Cookies.remove('user');
     },
   },

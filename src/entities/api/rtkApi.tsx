@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const rtkApi = createApi({
   reducerPath: 'blogApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://blog-platform.kata.academy/api' }),
+  refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
     getPosts: build.query({
       query: (offset = 0) => ({
@@ -16,6 +17,19 @@ export const rtkApi = createApi({
     getSinglePost: build.query({
       query: (slug) => ({
         url: `/articles/${slug}`,
+      }),
+    }),
+    createArticle: build.mutation({
+      query: ({ token, article }) => ({
+        url: '/articles',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${token}`,
+        },
+        body: {
+          article,
+        },
       }),
     }),
     registerUser: build.mutation({
@@ -43,7 +57,27 @@ export const rtkApi = createApi({
         },
       }),
     }),
+    editUser: build.mutation({
+      query: ({ token, user }) => ({
+        url: '/user',
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${token}`,
+        },
+        body: {
+          user,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetPostsQuery, useGetSinglePostQuery, useRegisterUserMutation, useLoginUserMutation } = rtkApi;
+export const {
+  useGetPostsQuery,
+  useGetSinglePostQuery,
+  useCreateArticleMutation,
+  useRegisterUserMutation,
+  useLoginUserMutation,
+  useEditUserMutation,
+} = rtkApi;

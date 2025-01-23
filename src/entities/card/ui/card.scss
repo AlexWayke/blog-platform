@@ -10,9 +10,8 @@
   &__header {
     display: flex;
     gap: 24px;
-    width: 100%;
     &-main {
-      flex: 1 1 100%;
+      flex: 1 1 auto;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -75,6 +74,28 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  &__user {
+    display: flex;
+    gap: 4px;
+    width: 200px;
+    justify-content: end;
+    &-name {
+      text-align: end;
+      font-size: 18px;
+      line-height: 20px;
+      color: var(--heading);
+    }
+    &-date {
+      text-align: end;
+      font-size: 14px;
+      line-height: 16px;
+      color: var(--text-second);
+    }
+  }
+  &__img {
+    height: 48px;
+    width: 48px;
   }
   &__body {
     font-weight: 400;

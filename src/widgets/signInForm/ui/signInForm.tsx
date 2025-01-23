@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks';
 function SignInForm() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const userEmail = useAppSelector((state) => state.user.email);
+  const isLogged = useAppSelector((state) => state.user.email);
   const {
     register,
     handleSubmit,
@@ -27,24 +27,20 @@ function SignInForm() {
   };
 
   useEffect(() => {
-    if (error && 'data' in error) {
-      const errorData = error as { data: { errors: { body: string } } };
-      Object.entries(errorData.data.errors).forEach(([key, value]) => {
-        setError(key, { type: 'custom', message: value });
-      });
+    if (error) {
+      setError('password', { type: 'custom', message: 'Email or password is invalid' });
     }
   }, [error, setError]);
 
   useEffect(() => {
     if (isSuccess) {
-      const { email, token, username } = data.user;
-      dispatch(setUser({ email, token, username }));
+      dispatch(setUser(data.user));
       navigate('/');
     }
-    if (userEmail) {
+    if (isLogged) {
       navigate('/');
     }
-  }, [isSuccess, data, dispatch, navigate, userEmail]);
+  }, [isSuccess, data, dispatch, navigate, isLogged]);
 
   return (
     <Form title="Sign In">
