@@ -7,11 +7,10 @@ import { useEffect } from 'react';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { setUser } from '@/entities/slices/userSlice';
-import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks';
+import { useAppDispatch } from '@/shared/hooks/hooks';
 
 function SignUpForm() {
   const [registerUser, { data, isSuccess, error, isLoading }] = useRegisterUserMutation();
-  const isLogged = useAppSelector((state) => state.user.isLogged);
   const {
     register,
     handleSubmit,
@@ -41,10 +40,7 @@ function SignUpForm() {
       dispatch(setUser(data.user));
       navigate('/');
     }
-    if (isLogged) {
-      navigate('/');
-    }
-  }, [isSuccess, data, dispatch, navigate, isLogged]);
+  }, [isSuccess, data, dispatch, navigate]);
 
   return (
     <Form title="Create new account">

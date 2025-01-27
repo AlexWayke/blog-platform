@@ -1,63 +1,72 @@
-import { useNavigate } from 'react-router';
+import { useEditArticleMutation, useCreateArticleMutation } from '@/entities/api/rtkApi';
 import Form from '@/entities/form';
 import { getLabelId } from '@/entities/form/lib/uniqId';
-import { FieldValues, useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useAppSelector } from '@/shared/hooks/hooks';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import { useAppSelector } from '@/shared/hooks/hooks';
-import { useCreateArticleMutation } from '@/entities/api/rtkApi';
+import { useEffect } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 
-function NewArticleForm() {
-  const { user, isLogged } = useAppSelector((state) => state.user);
+type FieldValuesType = {
+  body: string;
+  title: string;
+  description: string;
+  tagList?: { tag: string }[];
+};
+
+type DefaultValuesType = {
+  body: string;
+  title: string;
+  description: string;
+  tagList?: string[];
+};
+
+function NewArticleForm(props: { defaultValues: DefaultValuesType; slug: string; action: string }) {
+  const { user } = useAppSelector((store) => store.user);
   const navigate = useNavigate();
+  const { defaultValues, action, slug } = props;
+  const mutation = action === 'create' ? useCreateArticleMutation : useEditArticleMutation;
+  const [handleArticle, { isSuccess, isLoading }] = mutation();
+
   const {
     register,
     handleSubmit,
-    setError,
+    control,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      tagList: defaultValues.tagList?.map((item) => ({ tag: item })),
+      title: defaultValues.title,
+      description: defaultValues.description,
+      body: defaultValues.body,
+    },
+  });
 
-  const [createArticle, { data, isSuccess, error, isLoading }] = useCreateArticleMutation();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'tagList',
+  });
 
-  console.log('error', error);
-
-  const onSubmit = (fieldData: FieldValues) => {
-    for (const key in fieldData) {
-      if (!fieldData[key].trim()) {
-        setError(key, { type: 'custom', message: 'field could not be empty' });
-        return;
-      }
-    }
-    const { tags, ...other } = fieldData;
-    const articleReq = {
-      ...other,
-      ...(tags && { tags }),
-    };
-    console.log('articleReq', articleReq);
-    createArticle({ token: user.token, article: articleReq });
+  const handleAddField = () => {
+    append({ tag: '' });
   };
 
-  useEffect(() => {
-    if (error && 'data' in error) {
-      const errorData = error as { data: { errors: { body: string } } };
-      Object.entries(errorData.data.errors).forEach(([key, value]) => {
-        setError(key, { type: 'custom', message: value });
-      });
-    }
-  }, [error, setError]);
+  const onSubmit = (requestFields: FieldValuesType) => {
+    const { tagList, ...other } = requestFields;
+    const formattedTagList = tagList?.map((item) => item.tag);
+    const requestData = { token: user.token, article: { tagList: formattedTagList, ...other }, slug };
+    handleArticle(requestData);
+  };
 
   useEffect(() => {
     if (isSuccess) {
       navigate('/');
     }
-    if (!isLogged) {
-      navigate('/');
-    }
-  }, [isSuccess, data, navigate, isLogged]);
+  }, [isSuccess, navigate]);
 
   return (
-    <Form class="form__wrapper--xl" title="Sign In">
+    <Form class="form__wrapper--xl" title="Create new article">
       <form className="form__body form__body--xl" onSubmit={handleSubmit(onSubmit)}>
         <div className="form__field">
           <label className="form__label" htmlFor={getLabelId(0)}>
@@ -68,14 +77,14 @@ function NewArticleForm() {
             id={getLabelId(0)}
             placeholder="Important Article Title"
             {...register('title', {
-              required: 'Fill title field',
+              required: 'Required field',
+              pattern: {
+                value: /[^\s]/,
+                message: 'Required field',
+              },
             })}
           />
-          {errors.title && (
-            <p className="form__input-warning">
-              <>{errors.title.message}</>
-            </p>
-          )}
+          <p className="form__input-warning">{errors.title?.message}</p>
         </div>
         <div className="form__field">
           <label className="form__label" htmlFor={getLabelId(0)}>
@@ -86,14 +95,14 @@ function NewArticleForm() {
             id={getLabelId(1)}
             placeholder="Some short description that displays in atricles list"
             {...register('description', {
-              required: 'Fill description field',
+              required: 'Required field',
+              pattern: {
+                value: /[^\s]/,
+                message: 'Required field',
+              },
             })}
           />
-          {errors.description && (
-            <p className="form__input-warning">
-              <>{errors.description.message}</>
-            </p>
-          )}
+          <p className="form__input-warning">{errors.description?.message}</p>
         </div>
         <div className="form__field">
           <label className="form__label" htmlFor={getLabelId(3)}>
@@ -104,17 +113,38 @@ function NewArticleForm() {
             id={getLabelId(2)}
             placeholder="Text in article"
             {...register('body', {
-              required: 'Fill text field',
+              required: 'Required field',
+              pattern: {
+                value: /[^\s]/,
+                message: 'Required field',
+              },
             })}
           ></textarea>
-          {errors.body && (
-            <p className="form__input-warning">
-              <>{errors.body.message}</>
-            </p>
-          )}
+          <p className="form__input-warning">{errors.body?.message}</p>
         </div>
-        <button className="form__btn" type="submit" disabled={isLoading}>
-          {isLoading ? <Spin indicator={<LoadingOutlined spin />} /> : 'Login'}
+        <label className="form__label">Tags</label>
+        <div className="form__tags">
+          <div className={`form__tags-wrapper ${!fields.length && 'hidden'}`}>
+            {fields &&
+              fields.map((field, index) => (
+                <div className="form__field form__field--tag" key={field.id}>
+                  <input
+                    className="form__input form__input--tag"
+                    placeholder="Some short tag"
+                    {...register(`tagList.${index}.tag`, { required: 'Required field' })}
+                  />
+                  <button className="form__btn form__btn--red" onClick={() => remove(index)}>
+                    Delete
+                  </button>
+                </div>
+              ))}
+          </div>
+          <button className="form__btn form__btn--white" type="button" onClick={() => handleAddField()}>
+            Add tag
+          </button>
+        </div>
+        <button className="form__btn form__btn--submit" disabled={isLoading} type="submit">
+          {isLoading ? <Spin indicator={<LoadingOutlined spin />} /> : 'Send'}
         </button>
       </form>
     </Form>

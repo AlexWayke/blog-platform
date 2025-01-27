@@ -7,12 +7,11 @@ import { useEffect } from 'react';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { setUser } from '@/entities/slices/userSlice';
-import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks';
+import { useAppDispatch } from '@/shared/hooks/hooks';
 
 function SignInForm() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isLogged = useAppSelector((state) => state.user.email);
   const {
     register,
     handleSubmit,
@@ -37,10 +36,7 @@ function SignInForm() {
       dispatch(setUser(data.user));
       navigate('/');
     }
-    if (isLogged) {
-      navigate('/');
-    }
-  }, [isSuccess, data, dispatch, navigate, isLogged]);
+  }, [isSuccess, data, dispatch, navigate]);
 
   return (
     <Form title="Sign In">
@@ -55,10 +51,6 @@ function SignInForm() {
             placeholder="Email address"
             {...register('email', {
               required: 'Fill email field',
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                message: 'Invalid email address',
-              },
             })}
           />
           {(errors.email && (

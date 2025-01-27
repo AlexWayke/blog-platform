@@ -10,7 +10,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router';
 
 function EditProfileForm() {
-  const { user, isLogged } = useAppSelector((state) => state.user);
+  const { user } = useAppSelector((state) => state.user);
   const [editUser, { data, isSuccess, error, isLoading }] = useEditUserMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -34,12 +34,6 @@ function EditProfileForm() {
 
     editUser(updatedUser);
   };
-
-  useEffect(() => {
-    if (!isLogged) {
-      navigate('/');
-    }
-  });
 
   useEffect(() => {
     if (error && 'data' in error) {

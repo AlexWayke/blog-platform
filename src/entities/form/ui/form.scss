@@ -32,11 +32,29 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+    &--tag {
+      flex-direction: row;
+      gap: 16px;
+    }
   }
   &__label {
     color: var(--heading);
     font-size: 14px;
     line-height: 20px;
+  }
+  &__tags {
+    display: flex;
+    gap: 16px;
+    &-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-width: 50%;
+      flex: 1 1 100%;
+      &.hidden {
+        display: none;
+      }
+    }
   }
   &__input {
     border: 1px solid var(--border);
@@ -47,6 +65,11 @@
     line-height: 24px;
     padding: 8px 12px;
     transition: all ease 0.3s;
+    box-sizing: border-box;
+    height: 40px;
+    &--tag {
+      flex-grow: 1;
+    }
     &::placeholder {
       transition: all ease 0.3s;
     }
@@ -100,15 +123,49 @@
     color: var(--base);
     font-size: 16px;
     line-height: 24px;
-    flex: 1 1 auto;
-    margin-top: 8px;
+    height: 40px;
+    box-sizing: border-box;
     border-radius: 4px;
-    padding: 8px 16px;
     text-align: center;
     cursor: pointer;
     transition: all ease 0.3s;
-    &:hover {
-      opacity: 0.9;
+    &--submit {
+      margin-top: 8px;
+      max-width: 320px;
+      &:hover {
+        border: 1px solid var(--blue);
+        color: var(--blue);
+        background-color: var(--base);
+      }
+    }
+    &--white {
+      background-color: var(--base);
+      color: var(--blue);
+      border: 1px solid var(--blue);
+      align-self: flex-end;
+      padding: 0 36px;
+      &:hover {
+        color: var(--base);
+        background-color: var(--blue);
+      }
+    }
+    &--disabled {
+      background-color: var(--base);
+      color: var(--border);
+      border: 1px solid var(--border);
+      cursor: default;
+      padding: 0 36px;
+    }
+    &--red {
+      background-color: var(--base);
+      color: var(--warning);
+      border: 1px solid var(--warning);
+      max-width: 120px;
+      padding: 0 36px;
+      &:hover {
+        color: var(--base);
+        background-color: var(--warning);
+      }
     }
     & svg {
       fill: var(--base);

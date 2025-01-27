@@ -32,6 +32,37 @@ export const rtkApi = createApi({
         },
       }),
     }),
+    editArticle: build.mutation({
+      query: ({ token, article, slug }) => ({
+        url: `/articles/${slug}`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${token}`,
+        },
+        body: {
+          article,
+        },
+      }),
+    }),
+    deleteArticle: build.mutation({
+      query: ({ token, slug }) => ({
+        url: `/articles/${slug}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      }),
+    }),
+    favoriteArticle: build.mutation({
+      query: ({ token, slug, favorited }) => ({
+        url: `/articles/${slug}/favorite`,
+        method: favorited ? 'DELETE' : 'POST',
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      }),
+    }),
     registerUser: build.mutation({
       query: ({ username, email, password }) => ({
         url: '/users',
@@ -77,6 +108,9 @@ export const {
   useGetPostsQuery,
   useGetSinglePostQuery,
   useCreateArticleMutation,
+  useEditArticleMutation,
+  useDeleteArticleMutation,
+  useFavoriteArticleMutation,
   useRegisterUserMutation,
   useLoginUserMutation,
   useEditUserMutation,

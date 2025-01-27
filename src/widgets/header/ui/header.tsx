@@ -8,7 +8,7 @@ function Header() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isLogged, user } = useAppSelector((state) => state.user);
-  const { image, username } = user;
+  const { image = '/Default_user.png', username } = user;
   const [avatar, setAvatar] = useState(image);
 
   const handleLogout = () => {
@@ -39,7 +39,7 @@ function Header() {
           <Link to="/new-article" className="header__button header__button--create-article">
             Create article
           </Link>
-          <Link to="/edit-profile" className="header__user">
+          <Link to="/profile" className="header__user">
             <p className="header__user-name">{username}</p>
             <img className="header__user-img" onError={handleErrorImg} src={avatar} alt="User avatar" />
           </Link>

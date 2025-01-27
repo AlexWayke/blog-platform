@@ -16,9 +16,12 @@ function ListOfPosts() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const cards = posts.map((post: ArticleType) => <Card cardData={post} showBody={false} key={uuidv4()} />);
+  const cards = posts.map((post: ArticleType) => (
+    <Card cardData={post} cutTitles={true} showBody={false} key={uuidv4()} />
+  ));
 
   return (
     <div className="posts wrapper">
