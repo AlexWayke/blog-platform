@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import Card from '@/entities/card/index.ts';
 import { Pagination } from 'antd';
-import { useGetPostsQuery } from '@/shared/api/getPosts';
+import { useGetPostsQuery } from '@/entities/api/rtkApi';
 import { Spin } from 'antd';
 import { useState } from 'react';
 import { ArticleType } from '@/shared/types/articleType';
@@ -16,9 +16,12 @@ function ListOfPosts() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const cards = posts.map((post: ArticleType) => <Card cardData={post} showBody={false} key={uuidv4()} />);
+  const cards = posts.map((post: ArticleType) => (
+    <Card cardData={post} cutTitles={true} showBody={false} key={uuidv4()} />
+  ));
 
   return (
     <div className="posts wrapper">
