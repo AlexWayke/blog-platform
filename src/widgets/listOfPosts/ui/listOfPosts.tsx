@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import Card from '@/entities/card/index.ts';
 import { Pagination } from 'antd';
-import { useGetPostsQuery } from '@/entities/api/rtkApi';
+import { useFavoriteArticleMutation, useGetPostsQuery } from '@/entities/api/rtkApi';
 import { Spin } from 'antd';
 import { useState } from 'react';
 import { ArticleType } from '@/shared/types/articleType';
@@ -9,6 +9,7 @@ import './listOfPosts.scss';
 
 function ListOfPosts() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [favoriteArticle] = useFavoriteArticleMutation();
 
   const { data, isLoading } = useGetPostsQuery((currentPage - 1) * 10);
   const posts = data?.articles || [];
@@ -19,9 +20,13 @@ function ListOfPosts() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const cards = posts.map((post: ArticleType) => (
-    <Card cardData={post} cutTitles={true} showBody={false} key={uuidv4()} />
-  ));
+  const cards = posts.map((post: ArticleType) => {
+    const handleFavorite = () => {
+      favoriteArticle({ slug: post.slug, favorited: post.favorited });
+    };
+
+    return <Card favoriteArticle={handleFavorite} cardData={post} cutTitles={true} showBody={false} key={uuidv4()} />;
+  });
 
   return (
     <div className="posts wrapper">

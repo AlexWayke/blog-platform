@@ -5,21 +5,25 @@ import { Link, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import './card.scss';
-import { useDeleteArticleMutation, useFavoriteArticleMutation } from '@/entities/api/rtkApi';
+import { useDeleteArticleMutation } from '@/entities/api/rtkApi';
 import { useAppSelector } from '@/shared/hooks/hooks';
 import { Spin } from 'antd';
 
-function Card(props: { cardData: ArticleType; showBody: boolean; cutTitles: boolean; isUserPost?: boolean }) {
+function Card(props: {
+  favoriteArticle: () => void;
+  cardData: ArticleType;
+  showBody: boolean;
+  cutTitles: boolean;
+  isUserPost?: boolean;
+}) {
   const { user, isLogged } = useAppSelector((state) => state.user);
-  const { cardData, showBody, cutTitles, isUserPost } = props;
+  const { favoriteArticle, cardData, showBody, cutTitles, isUserPost } = props;
   const { title, tagList, description, author, createdAt, slug, body, favoritesCount, favorited } = cardData;
   const { avatar = '/Default_user.png', username } = author;
   const [image, setImage] = useState(avatar);
   const [openModal, setOpenModal] = useState(false);
   const [likeModal, setLikeModal] = useState(false);
-  const [favoriteArticle, { data }] = useFavoriteArticleMutation();
-  const [isFavorite, setIsFavorite] = useState(data?.article?.favorited || favorited);
-  const [favoriteCount, setFavoriteCount] = useState(favoritesCount);
+
   const [deleteArticle, { isSuccess, isLoading }] = useDeleteArticleMutation();
   const navigate = useNavigate();
 
@@ -38,13 +42,11 @@ function Card(props: { cardData: ArticleType; showBody: boolean; cutTitles: bool
   const handleToggleModal = (open: boolean) => setOpenModal(open);
 
   const handleDeletePost = () => deleteArticle({ token: user.token, slug });
-  const handleLike = () => {
+  const handleFavorite = () => {
     if (isLogged) {
-      setIsFavorite(!isFavorite);
-      setFavoriteCount(isFavorite ? favoriteCount - 1 : favoriteCount + 1);
-      return favoriteArticle({ token: user.token, slug, favorited: isFavorite });
+      return favoriteArticle();
     }
-    return setOpenModal(true);
+    return setLikeModal(true);
   };
 
   useEffect(() => {
@@ -81,10 +83,10 @@ function Card(props: { cardData: ArticleType; showBody: boolean; cutTitles: bool
             </Link>
             <div className="like">
               {likeModal && <div className="like__modal">Sign up first!</div>}
-              <button className="like__btn" onClick={() => handleLike()} type="button">
-                <img src={isFavorite ? '/heart-fill.svg' : '/heart-icon.svg'} alt="like" />
+              <button className="like__btn" onClick={() => handleFavorite()} type="button">
+                <img src={favorited ? '/heart-fill.svg' : '/heart-icon.svg'} alt="like" />
               </button>
-              <p className="card__like__count">{favoriteCount}</p>
+              <p className="card__like__count">{favoritesCount}</p>
             </div>
           </div>
           <ul className={`card__tags ${cutTitles && 'card__tags--short'}`}>{tagsList}</ul>

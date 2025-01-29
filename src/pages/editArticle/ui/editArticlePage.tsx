@@ -1,11 +1,16 @@
 import { useGetSinglePostQuery } from '@/entities/api/rtkApi';
+import { useAppSelector } from '@/shared/hooks/hooks';
 import Header from '@/widgets/header/index.ts';
 import NewArticleForm from '@/widgets/newArticle';
 import { Spin } from 'antd';
-import { useParams } from 'react-router';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router';
 
 function EditArticlePage() {
+  const navigate = useNavigate();
   const { slug } = useParams();
+
+  const { user } = useAppSelector((store) => store.user);
   const { data, isLoading, isError } = useGetSinglePostQuery(slug);
 
   const defaultValues = {
@@ -14,6 +19,12 @@ function EditArticlePage() {
     description: data?.article?.description || '',
     body: data?.article?.body || '',
   };
+
+  useEffect(() => {
+    if (data.article.author.username !== user.username) {
+      navigate('/');
+    }
+  }, [data.article.author.username, navigate, user.username]);
 
   return (
     <>
