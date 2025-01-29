@@ -1,7 +1,6 @@
 import { useEditArticleMutation, useCreateArticleMutation } from '@/entities/api/rtkApi';
 import Form from '@/entities/form';
 import { getLabelId } from '@/entities/form/lib/uniqId';
-import { useAppSelector } from '@/shared/hooks/hooks';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useEffect } from 'react';
@@ -23,7 +22,6 @@ type DefaultValuesType = {
 };
 
 function NewArticleForm(props: { defaultValues: DefaultValuesType; slug: string; action: string }) {
-  const { user } = useAppSelector((store) => store.user);
   const navigate = useNavigate();
   const { defaultValues, action, slug } = props;
   const mutation = action === 'create' ? useCreateArticleMutation : useEditArticleMutation;
@@ -55,7 +53,7 @@ function NewArticleForm(props: { defaultValues: DefaultValuesType; slug: string;
   const onSubmit = (requestFields: FieldValuesType) => {
     const { tagList, ...other } = requestFields;
     const formattedTagList = tagList?.map((item) => item.tag);
-    const requestData = { token: user.token, article: { tagList: formattedTagList, ...other }, slug };
+    const requestData = { article: { tagList: formattedTagList, ...other }, slug };
     handleArticle(requestData);
   };
 

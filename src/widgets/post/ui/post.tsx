@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import Card from '@/entities/card/index.ts';
-import { useGetSinglePostQuery } from '@/entities/api/rtkApi';
+import { useFavoriteArticleMutation, useGetSinglePostQuery } from '@/entities/api/rtkApi';
 import { Spin } from 'antd';
 
 import './post.scss';
@@ -12,6 +12,12 @@ function Post() {
   const { data, isLoading, isError } = useGetSinglePostQuery(slug);
   const { user } = useAppSelector((store) => store.user);
   const isUserPost = data?.article?.author?.username == user.username;
+  const [favoriteArticle, { data: dataFavorite }] = useFavoriteArticleMutation();
+  const nextData = dataFavorite?.article || data?.article;
+
+  const handleFavorite = () => {
+    favoriteArticle({ token: user.token, slug, favorited: nextData.favorited });
+  };
 
   return (
     <div className="post wrapper">
@@ -19,7 +25,14 @@ function Post() {
       {isLoading && <Spin size="large" />}
       {!isLoading && (
         <div className="layout">
-          <Card cardData={data.article} showBody={true} key={uuidv4()} cutTitles={false} isUserPost={isUserPost} />
+          <Card
+            cardData={nextData}
+            favoriteArticle={handleFavorite}
+            showBody={true}
+            key={uuidv4()}
+            cutTitles={false}
+            isUserPost={isUserPost}
+          />
         </div>
       )}
     </div>

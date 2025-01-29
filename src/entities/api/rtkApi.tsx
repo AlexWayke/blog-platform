@@ -1,8 +1,27 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+interface RootState {
+  user: {
+    user: {
+      token: string;
+    };
+  };
+}
+
 export const rtkApi = createApi({
   reducerPath: 'blogApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://blog-platform.kata.academy/api' }),
+  tagTypes: ['post'],
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://blog-platform.kata.academy/api',
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).user?.user?.token;
+      if (token) {
+        headers.set('Authorization', `Token ${token}`);
+      }
+      headers.set('Content-Type', 'application/json');
+      return headers;
+    },
+  }),
   refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
     getPosts: build.query({
@@ -13,6 +32,7 @@ export const rtkApi = createApi({
           limit: 10,
         },
       }),
+      providesTags: ['post'],
     }),
     getSinglePost: build.query({
       query: (slug) => ({
@@ -20,26 +40,19 @@ export const rtkApi = createApi({
       }),
     }),
     createArticle: build.mutation({
-      query: ({ token, article }) => ({
+      query: ({ article }) => ({
         url: '/articles',
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Token ${token}`,
-        },
         body: {
           article,
         },
       }),
+      invalidatesTags: ['post'],
     }),
     editArticle: build.mutation({
-      query: ({ token, article, slug }) => ({
+      query: ({ article, slug }) => ({
         url: `/articles/${slug}`,
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Token ${token}`,
-        },
         body: {
           article,
         },
@@ -53,15 +66,14 @@ export const rtkApi = createApi({
           Authorization: `Token ${token}`,
         },
       }),
+      invalidatesTags: ['post'],
     }),
     favoriteArticle: build.mutation({
-      query: ({ token, slug, favorited }) => ({
+      query: ({ slug, favorited }) => ({
         url: `/articles/${slug}/favorite`,
         method: favorited ? 'DELETE' : 'POST',
-        headers: {
-          Authorization: `Token ${token}`,
-        },
       }),
+      invalidatesTags: ['post'],
     }),
     registerUser: build.mutation({
       query: ({ username, email, password }) => ({
@@ -89,13 +101,9 @@ export const rtkApi = createApi({
       }),
     }),
     editUser: build.mutation({
-      query: ({ token, user }) => ({
+      query: ({ user }) => ({
         url: '/user',
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Token ${token}`,
-        },
         body: {
           user,
         },
