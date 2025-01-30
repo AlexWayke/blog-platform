@@ -25,7 +25,7 @@ function NewArticleForm(props: { defaultValues: DefaultValuesType; slug: string;
   const navigate = useNavigate();
   const { defaultValues, action, slug } = props;
   const mutation = action === 'create' ? useCreateArticleMutation : useEditArticleMutation;
-  const [handleArticle, { isSuccess, isLoading }] = mutation();
+  const [handleArticle, { data, isSuccess, isLoading }] = mutation();
 
   const {
     register,
@@ -59,9 +59,9 @@ function NewArticleForm(props: { defaultValues: DefaultValuesType; slug: string;
 
   useEffect(() => {
     if (isSuccess) {
-      navigate('/');
+      navigate(`/articles/${data.article.slug}`);
     }
-  }, [isSuccess, navigate]);
+  }, [data, isSuccess, navigate]);
 
   return (
     <Form class="form__wrapper--xl" title="Create new article">

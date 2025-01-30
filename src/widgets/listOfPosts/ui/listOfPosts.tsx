@@ -3,20 +3,22 @@ import Card from '@/entities/card/index.ts';
 import { Pagination } from 'antd';
 import { useFavoriteArticleMutation, useGetPostsQuery } from '@/entities/api/rtkApi';
 import { Spin } from 'antd';
-import { useState } from 'react';
 import { ArticleType } from '@/shared/types/articleType';
 import './listOfPosts.scss';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 function ListOfPosts() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+  const { page = 1 } = useParams();
   const [favoriteArticle] = useFavoriteArticleMutation();
 
-  const { data, isLoading } = useGetPostsQuery((currentPage - 1) * 10);
+  const { data, isLoading } = useGetPostsQuery((Number(page) - 1) * 10);
   const posts = data?.articles || [];
   const maxPages = Math.floor(data?.articlesCount / 10) || 1;
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+  const handlePageChange = (currentPage: number) => {
+    navigate(`/page/${currentPage}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -36,7 +38,7 @@ function ListOfPosts() {
           <div className="posts_list layout">{cards}</div>
           <Pagination
             className="layout"
-            defaultCurrent={currentPage}
+            defaultCurrent={Number(page)}
             onChange={handlePageChange}
             showSizeChanger={false}
             total={maxPages}

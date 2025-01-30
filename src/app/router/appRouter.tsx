@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, Outlet, HashRouter } from 'react-router';
+import { Routes, Route, Navigate, Outlet, BrowserRouter } from 'react-router';
 import PostsList from '@/pages/postsList';
 import PostPage from '@/pages/post';
 import SignInPage from '@/pages/signIn';
@@ -15,22 +15,22 @@ function AppRouter() {
   const ProtectedAuthRoute = ({ redirectedPath = '/' }) => (!isLogged ? <Outlet /> : <Navigate to={redirectedPath} />);
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         <Route path="*" element={<PostsList />} />
-        <Route path="/articles?" element={<PostsList />} />
-        <Route path="/articles/:slug" element={<PostPage />} />
+        <Route path="page?/:page" element={<PostsList />} />
+        <Route path="articles/:slug" element={<PostPage />} />
         <Route element={<ProtectedNotAuthRoute />}>
-          <Route path="/profile" element={<EditProfilePage />} />
-          <Route path="/articles/:slug/edit" element={<EditArticlePage />} />
-          <Route path="/new-article" element={<NewArticlePage />} />
+          <Route path="profile" element={<EditProfilePage />} />
+          <Route path="articles/:slug/edit" element={<EditArticlePage />} />
+          <Route path="new-article" element={<NewArticlePage />} />
         </Route>
         <Route element={<ProtectedAuthRoute />}>
-          <Route path="/sign-in" element={<SignInPage />} />
-          <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="sign-in" element={<SignInPage />} />
+          <Route path="sign-up" element={<SignUpPage />} />
         </Route>
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 

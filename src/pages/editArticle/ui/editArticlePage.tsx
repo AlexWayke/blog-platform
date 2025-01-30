@@ -35,7 +35,7 @@ function EditArticlePage() {
           <Spin size="large" />
         </div>
       )}
-      {!isLoading && <NewArticleForm defaultValues={defaultValues} action="create" slug={slug || ''} />}
+      {!isLoading && <NewArticleForm defaultValues={defaultValues} action="edit" slug={slug || ''} />}
     </>
   );
 }
