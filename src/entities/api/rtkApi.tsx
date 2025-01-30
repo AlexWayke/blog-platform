@@ -52,7 +52,7 @@ export const rtkApi = createApi({
     editArticle: build.mutation({
       query: ({ article, slug }) => ({
         url: `/articles/${slug}`,
-        method: 'POST',
+        method: 'PUT',
         body: {
           article,
         },

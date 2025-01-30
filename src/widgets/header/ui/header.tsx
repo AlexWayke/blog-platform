@@ -8,7 +8,7 @@ function Header() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isLogged, user } = useAppSelector((state) => state.user);
-  const { image = '/Default_user.png', username } = user;
+  const { image = 'https://i.pinimg.com/736x/bd/d9/aa/bdd9aaee8c129b1d0a7180512c6f7ae5.jpg', username } = user;
   const [avatar, setAvatar] = useState(image);
 
   const handleLogout = () => {
@@ -16,7 +16,7 @@ function Header() {
     navigate('/');
   };
   const handleErrorImg = () => {
-    setAvatar('/Default_user.png');
+    setAvatar('https://i.pinimg.com/736x/bd/d9/aa/bdd9aaee8c129b1d0a7180512c6f7ae5.jpg');
   };
 
   return (

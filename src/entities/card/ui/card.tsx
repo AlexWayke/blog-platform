@@ -19,7 +19,7 @@ function Card(props: {
   const { user, isLogged } = useAppSelector((state) => state.user);
   const { favoriteArticle, cardData, showBody, cutTitles, isUserPost } = props;
   const { title, tagList, description, author, createdAt, slug, body, favoritesCount, favorited } = cardData;
-  const { avatar = '/Default_user.png', username } = author;
+  const { avatar = 'https://i.pinimg.com/736x/bd/d9/aa/bdd9aaee8c129b1d0a7180512c6f7ae5.jpg', username } = author;
   const [image, setImage] = useState(avatar);
   const [openModal, setOpenModal] = useState(false);
   const [likeModal, setLikeModal] = useState(false);
@@ -28,7 +28,7 @@ function Card(props: {
   const navigate = useNavigate();
 
   const handleErrorImg = () => {
-    setImage('/Default_user.png');
+    setImage('https://i.pinimg.com/736x/bd/d9/aa/bdd9aaee8c129b1d0a7180512c6f7ae5.jpg');
   };
 
   const formattedDate = format(parse(createdAt, "yyyy-MM-dd'T'HH:mm:ss.SSSX", new Date()), 'MMMM d, yyyy');
@@ -84,7 +84,7 @@ function Card(props: {
             <div className="like">
               {likeModal && <div className="like__modal">Sign up first!</div>}
               <button className="like__btn" onClick={() => handleFavorite()} type="button">
-                <img src={favorited ? '/heart-fill.svg' : '/heart-icon.svg'} alt="like" />
+                {favorited ? '❤️' : '🤍'}
               </button>
               <p className="card__like__count">{favoritesCount}</p>
             </div>
