@@ -1,1 +1,1 @@
-Deploy: https://blog-platform-wfba-bloa28x8z-alexanderpoltavskys-projects.vercel.app/
+Deploy: https://blog-platform-ykfd.vercel.app/
